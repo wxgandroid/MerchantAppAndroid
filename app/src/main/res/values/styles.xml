@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <!--商家设置页面TextView的样式-->
+    <style name="setting_textview_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">88px</item>
+        <item name="android:drawablePadding">20px</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">20px</item>
+        <item name="android:paddingRight">20px</item>
+    </style>
+
+
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/layout_divider"/>
+
+    <TextView
+        android:id="@+id/tv_mechant_info"
+        style="@style/setting_textview_style"
+        android:drawableLeft="@mipmap/ic_launcher"
+        android:drawableRight="@mipmap/ic_launcher"
+        android:text="@string/setting_merchant_info"/>
+
+    <include layout="@layout/layout_divider"/>
+
+    <TextView
+        android:id="@+id/tv_business_setting"
+        style="@style/setting_textview_style"
+        android:drawableLeft="@mipmap/ic_launcher"
+        android:drawableRight="@mipmap/ic_launcher"
+        android:text="@string/setting_business_setting"/>
+
+    <include layout="@layout/layout_divider"/>
+
+    <TextView
+        android:id="@+id/tv_message_remind"
+        style="@style/setting_textview_style"
+        android:drawableLeft="@mipmap/ic_launcher"
+        android:drawableRight="@mipmap/ic_launcher"
+        android:text="@string/setting_message_reminder"/>
+
+    <include layout="@layout/layout_divider"/>
+
+    <TextView
+        android:id="@+id/tv_edit_password"
+        style="@style/setting_textview_style"
+        android:drawableLeft="@mipmap/ic_launcher"
+        android:drawableRight="@mipmap/ic_launcher"
+        android:text="@string/setting_edit_password"/>
+
+    <include layout="@layout/layout_divider"/>
+
+    <TextView
+        android:id="@+id/tv_cancel_user"
+        style="@style/setting_textview_style"
+        android:drawableLeft="@mipmap/ic_launcher"
+        android:drawableRight="@mipmap/ic_launcher"
+        android:text="@string/setting_cancel_user"/>
+
+    <include layout="@layout/layout_divider"/>
+
+</LinearLayout>
