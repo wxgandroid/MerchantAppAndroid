@@ -3,14 +3,17 @@ package com.pujitech.wxgcommonhttp.modules.main.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pujitech.commonhttplibrary.RxLifeRecycle;
 import com.pujitech.commonhttplibrary.bases.BaseActivity;
 import com.pujitech.commonhttplibrary.bases.BaseFragment;
+import com.pujitech.commonhttplibrary.utils.DialogUtils;
 import com.pujitech.wxgcommonhttp.R;
 import com.pujitech.wxgcommonhttp.R2;
 import com.pujitech.wxgcommonhttp.modules.main.presenter.MainPresenter;
@@ -23,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity<MainPresenter> implements RxLifeRecycle, View.OnClickListener {
+public class MainActivity extends BaseActivity<MainPresenter> implements RxLifeRecycle, View.OnClickListener, AdapterView.OnItemClickListener {
 
     @BindView(R2.id.fl_fragment)
     FrameLayout fl_fragment;                //填充fragment的FrameLayout
@@ -62,7 +65,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements RxLifeR
     View iv_back;
 
     @BindView(R2.id.tv_title)
-    TextView tv_title;
+    TextView tv_title;                          //页面的title
+
+    @BindView(R2.id.tv_right_text)
+    TextView tv_right_text;                     //顶部状态栏右侧文字
 
     private int mCheckedPosition = -1;
     private OrderFragment mOrderFragment;       //订单模块对应的页面
@@ -70,27 +76,38 @@ public class MainActivity extends BaseActivity<MainPresenter> implements RxLifeR
     private MessageFragment mMessageFragment;   //消息模块对应的页面
     private SettingFragment mSettingFragment;   //设置模块对应的页面
 
+    private String[] mArrays = {"商品订单", "服务订单", "课程培训", "场地预约"};
+    private ListPopupWindow mTopListPopup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         initView();
-
-
     }
 
     /**
      * 初始化界面
      */
     private void initView() {
-
         mDoubleClickExit = true;
+        tv_right_text.setText(mArrays[0]);
+
         switchButtonChecked(0);
 
+        initOrderFragmentData();
+    }
 
+    /**
+     * 初始化订单模块页面的数据
+     */
+    private void initOrderFragmentData() {
+        if (mOrderFragment != null) {
+            mOrderFragment.initArrayData(mArrays);
+            mOrderFragment.showFragmentPosition(0);
+        }
     }
 
 
@@ -104,7 +121,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements RxLifeR
             return;
         }
         mCheckedPosition = position;
-
         switch (position) {
             case 0:
                 //选中订单模块
@@ -196,21 +212,25 @@ public class MainActivity extends BaseActivity<MainPresenter> implements RxLifeR
             case 0:
                 if (mOrderFragment != null) {
                     transaction.show(mOrderFragment);
+                    tv_right_text.setVisibility(View.VISIBLE);
                 }
                 break;
             case 1:
                 if (mProductFragment != null) {
                     transaction.show(mProductFragment);
+                    tv_right_text.setVisibility(View.GONE);
                 }
                 break;
             case 2:
                 if (mMessageFragment != null) {
                     transaction.show(mMessageFragment);
+                    tv_right_text.setVisibility(View.GONE);
                 }
                 break;
             case 3:
                 if (mSettingFragment != null) {
                     transaction.show(mSettingFragment);
+                    tv_right_text.setVisibility(View.GONE);
                 }
                 break;
         }
@@ -229,22 +249,58 @@ public class MainActivity extends BaseActivity<MainPresenter> implements RxLifeR
     }
 
 
-    @OnClick({R2.id.rl_orders_bg, R2.id.rl_product_bg, R2.id.rl_message_bg, R2.id.rl_setting_bg})
+    @OnClick({R2.id.rl_orders_bg, R2.id.rl_product_bg, R2.id.rl_message_bg, R2.id.rl_setting_bg, R2.id.tv_right_text})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_orders_bg:
-                switchButtonChecked(0);
+                switchButtonChecked(0);//订单页面
                 break;
             case R.id.rl_product_bg:
-                switchButtonChecked(1);
+                switchButtonChecked(1);//产品页面
                 break;
             case R.id.rl_message_bg:
-                switchButtonChecked(2);
+                switchButtonChecked(2);//消息页面
                 break;
             case R.id.rl_setting_bg:
-                switchButtonChecked(3);
+                switchButtonChecked(3);//设置页面
+                break;
+            case R.id.tv_right_text:
+                //顶部悬浮窗
+                showTopPopup();
                 break;
         }
+    }
+
+    /**
+     * 显示顶部标题栏右侧悬浮窗
+     */
+    private void showTopPopup() {
+        if (mTopListPopup == null) {
+            mTopListPopup = DialogUtils.showPopupWindow(this, tv_right_text, mArrays, this);
+        } else if (mTopListPopup.isShowing()) {
+            mTopListPopup.dismiss();
+        } else {
+            mTopListPopup.show();
+        }
+    }
+
+    /**
+     * 顶部popupWindow的item点击事件
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (mArrays[position].equals(tv_right_text.getText().toString())) {
+            //和上次选中项相同
+            return;
+        }
+        tv_right_text.setText(mArrays[position]);
+        //显示指定位置的fragment
+        mOrderFragment.showFragmentPosition(position);
     }
 }

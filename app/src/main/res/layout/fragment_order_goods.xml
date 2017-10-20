@@ -4,16 +4,16 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.pujitech.wxgcommonhttp.weight.TabsView
-        android:id="@+id/tabview_order_goods"
-        android:layout_width="match_parent"
-        android:layout_height="88px"/>
+    <!--<com.pujitech.wxgcommonhttp.weight.TabsView-->
+        <!--android:id="@+id/tabview_order_goods"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="88px"/>-->
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_order_goods"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:id="@+id/vp_order_goods"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:visibility="gone"/>-->
 
     <TextView
         android:id="@+id/tv_text"

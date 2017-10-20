@@ -8,6 +8,9 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListPopupWindow;
 
 import com.pujitech.commonhttplibrary.R;
 
@@ -49,6 +52,22 @@ public class DialogUtils {
 
         dialog.show();
         return dialog;
+    }
+
+    /**
+     * show一个popupWindow
+     */
+    public static ListPopupWindow showPopupWindow(Context context, View view, Object[] objArray, AdapterView.OnItemClickListener onItemClickListener) {
+
+        ListPopupWindow listPopupWindow = new ListPopupWindow(context);
+        listPopupWindow.setAdapter(new ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, objArray));
+        listPopupWindow.setWidth(200);
+        listPopupWindow.setHeight(ListPopupWindow.WRAP_CONTENT);
+        listPopupWindow.setAnchorView(view);
+        listPopupWindow.setOnItemClickListener(onItemClickListener);
+        listPopupWindow.show();
+        return listPopupWindow;
+
     }
 
 

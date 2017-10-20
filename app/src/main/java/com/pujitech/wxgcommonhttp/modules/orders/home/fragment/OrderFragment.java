@@ -1,13 +1,13 @@
 package com.pujitech.wxgcommonhttp.modules.orders.home.fragment;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.pujitech.commonhttplibrary.bases.BaseFragment;
+import com.pujitech.commonhttplibrary.utils.LogUtils;
 import com.pujitech.wxgcommonhttp.R;
 import com.pujitech.wxgcommonhttp.R2;
 import com.pujitech.wxgcommonhttp.modules.orders.goodsorder.fragment.GoodsOrderFragment;
@@ -29,26 +29,24 @@ public class OrderFragment extends BaseFragment<OrderPresenter> implements Order
     @BindView(R2.id.fl_order_fragment)
     FrameLayout fl_order_fragment;
 
-    private List<GoodsOrderFragment> mFragments = new ArrayList<>();
+    private List<GoodsOrderFragment> mFragments = new ArrayList<>(10);
 
     private int mCheckPosition = -1;
 
-    private String[] str = {"商品订单", "服务订单", "课程培训", "场地预约"};
+    private String[] mArrays = null;
 
+    private final String TAG = OrderFragment.class.getSimpleName();
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            LogUtils.i(TAG, "onHiddenChanged");
+        }
+    }
 
     @Override
     protected void initData() {
-        mFragments.clear();
-        GoodsOrderFragment goodsOrderFragment = null;
-        Bundle bundle = null;
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        for (int i = 0; i < str.length; i++) {
-            goodsOrderFragment = BaseFragment.createFragment(GoodsOrderFragment.class);
-            mFragments.add(goodsOrderFragment);
-            transaction.add(R.id.fl_order_fragment, goodsOrderFragment);
-        }
-        transaction.commit();
-        hideAllFragment(0);
     }
 
     @Override
@@ -72,21 +70,31 @@ public class OrderFragment extends BaseFragment<OrderPresenter> implements Order
      *
      * @param position
      */
-    private void hideAllFragment(int position) {
+    public void showFragmentPosition(int position) {
         if (position == mCheckPosition) {
             return;
         }
         mCheckPosition = position;
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        for (int i = 0; i < mFragments.size(); i++) {
-            if (position == i) {
-                transaction.show(mFragments.get(i));
-                mFragments.get(i).setOrderType(i);
-            } else {
-                transaction.hide(mFragments.get(i));
-            }
+        GoodsOrderFragment goodsOrderFragment = mFragments.get(position);
+        if (goodsOrderFragment == null) {
+            goodsOrderFragment = BaseFragment.createFragment(GoodsOrderFragment.class);
+            goodsOrderFragment.setOrderType(position);
+            mFragments.add(position, goodsOrderFragment);
         }
-        transaction.commit();
+        transaction.replace(R.id.fl_order_fragment, goodsOrderFragment).commit();
+    }
+
+
+    /**
+     * 初始化数据
+     */
+    public void initArrayData(String[] arrays) {
+        mArrays = arrays;
+        mFragments.clear();
+        for (int i = 0; i < mArrays.length; i++) {
+            mFragments.add(i, null);
+        }
     }
 
 

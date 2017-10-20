@@ -10,7 +10,7 @@ import android.util.Log;
  */
 public class LogUtils {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     private static final String TAG = "LogUtils";
 
